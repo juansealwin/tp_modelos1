@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
-#include <vector>
 #include <map>
+
 using namespace std;
 
 #define A 0
@@ -18,74 +18,6 @@ using namespace std;
 
 #define MAX_CIUDADES 11
 
-typedef enum {
-  ciudad_A, 
-  ciudad_B, 
-  ciudad_C, 
-  ciudad_D, 
-  ciudad_E, 
-  ciudad_F, 
-  ciudad_G, 
-  ciudad_H, 
-  ciudad_I, 
-  ciudad_J, 
-  ciudad_K
-} ciudad_t;
-
-int main(int argc, char* argv) {
-
-  size_t poblacion_ciudad_A = 15000;
-  size_t poblacion_ciudad_B = 20000;
-  size_t poblacion_ciudad_C = 38000;
-  size_t poblacion_ciudad_D = 12000;
-  size_t poblacion_ciudad_E = 22000;
-  size_t poblacion_ciudad_F = 31000;
-  size_t poblacion_ciudad_G = 300000;
-  size_t poblacion_ciudad_H = 62000;
-  size_t poblacion_ciudad_I = 15000;
-  size_t poblacion_ciudad_J = 6000;
-  size_t poblacion_ciudad_K = 30000;
-  
-  map<ciudad_t, size_t> ciudad_tiene_hospital = {
-    {ciudad_A, 0},
-    {ciudad_B, 0}, 
-    {ciudad_C, 0}, 
-    {ciudad_D, 0}, 
-    {ciudad_E, 0}, 
-    {ciudad_F, 0}, 
-    {ciudad_G, 0}, 
-    {ciudad_H, 0}, 
-    {ciudad_I, 0}, 
-    {ciudad_J, 0}, 
-    {ciudad_K, 0}
-  };
-
-
-  for (size_t i = 0 ; i < MAX_CIUDADES ; i++) {
-    ciudad_tiene_hospital[ciudad_A] = 1;
-    ciudad_tiene_hospital[ciudad_B] = 1;
-    ciudad_tiene_hospital[ciudad_C] = 1;
-    ciudad_tiene_hospital[ciudad_D] = 1;
-
-  }
-
-  
-
-  // size_t tiempo_ciudad_A = 60 - ciudad_A_tiene_hospital * 45;
-  // size_t tiempo_ciudad_B = 60 - ciudad_B_tiene_hospital * 45;
-  // size_t tiempo_ciudad_C = 60 - ciudad_C_tiene_hospital * 45;
-  // size_t tiempo_ciudad_D = 60 - ciudad_D_tiene_hospital * 45;
-  // size_t tiempo_ciudad_E = 60 - ciudad_E_tiene_hospital * 45;
-  // size_t tiempo_ciudad_F = 60 - ciudad_F_tiene_hospital * 45;
-  // size_t tiempo_ciudad_G = 60 - ciudad_G_tiene_hospital * 45;
-  // size_t tiempo_ciudad_H = 60 - ciudad_H_tiene_hospital * 45;
-  // size_t tiempo_ciudad_I = 60 - ciudad_I_tiene_hospital * 45;
-  // size_t tiempo_ciudad_J = 60 - ciudad_J_tiene_hospital * 45;
-  // size_t tiempo_ciudad_K = 60 - ciudad_K_tiene_hospital * 45;
-
-  return 0;
-}
-
 bool config_valida(map<size_t, size_t> ciudad_tiene_hospital) {
   return(
     (ciudad_tiene_hospital[A] + ciudad_tiene_hospital[B] + ciudad_tiene_hospital[D] + ciudad_tiene_hospital[F] >= 1) &&
@@ -101,5 +33,69 @@ bool config_valida(map<size_t, size_t> ciudad_tiene_hospital) {
     (ciudad_tiene_hospital[K] + ciudad_tiene_hospital[F] >= 1)
   );
 }
+
+int main(int argc, char** argv) {
+
+  // size_t poblacion_ciudad_A = 15000;
+  // size_t poblacion_ciudad_B = 20000;
+  // size_t poblacion_ciudad_C = 38000;
+  // size_t poblacion_ciudad_D = 12000;
+  // size_t poblacion_ciudad_E = 22000;
+  // size_t poblacion_ciudad_F = 31000;
+  // size_t poblacion_ciudad_G = 300000;
+  // size_t poblacion_ciudad_H = 62000;
+  // size_t poblacion_ciudad_I = 15000;
+  // size_t poblacion_ciudad_J = 6000;
+  // size_t poblacion_ciudad_K = 30000;
+  
+  map<size_t, size_t> ciudad_tiene_hospital = {
+    {A, 0},
+    {B, 0}, 
+    {C, 0}, 
+    {D, 0}, 
+    {E, 0}, 
+    {F, 0}, 
+    {G, 0}, 
+    {H, 0}, 
+    {I, 0}, 
+    {J, 0}, 
+    {K, 0}
+  };
+
+  for (size_t i = 0 ; i < MAX_CIUDADES ; i++) {
+    ciudad_tiene_hospital[i] = 1;
+    for (size_t j = i ; j < MAX_CIUDADES ; j++) {
+      ciudad_tiene_hospital[j] = 1;
+      for (size_t k = j ; k < MAX_CIUDADES ; k++) {
+        ciudad_tiene_hospital[k] = 1;
+        for (size_t l = k ; l < MAX_CIUDADES ; l++) {
+          ciudad_tiene_hospital[l] = 1;
+          if(config_valida(ciudad_tiene_hospital))
+            break;
+          else
+            ciudad_tiene_hospital[l] = 0;
+        }
+        ciudad_tiene_hospital[k] = 0;
+      }
+      ciudad_tiene_hospital[j] = 0;
+    }
+    ciudad_tiene_hospital[i] = 0;
+  }
+
+  cout<<"Ciudad A:"<< ciudad_tiene_hospital[A] << endl;
+  cout<<"Ciudad B:"<< ciudad_tiene_hospital[B] << endl;
+  cout<<"Ciudad C:"<< ciudad_tiene_hospital[C] << endl;
+  cout<<"Ciudad D:"<< ciudad_tiene_hospital[D] << endl;
+  cout<<"Ciudad E:"<< ciudad_tiene_hospital[E] << endl;
+  cout<<"Ciudad F:"<< ciudad_tiene_hospital[F] << endl;
+  cout<<"Ciudad G:"<< ciudad_tiene_hospital[G] << endl;
+  cout<<"Ciudad H:"<< ciudad_tiene_hospital[H] << endl;
+  cout<<"Ciudad I:"<< ciudad_tiene_hospital[I] << endl;
+  cout<<"Ciudad J:"<< ciudad_tiene_hospital[J] << endl;
+  cout<<"Ciudad K:"<< ciudad_tiene_hospital[K] << endl;
+
+  return EXIT_SUCCESS;
+}
+
 
   
