@@ -47,22 +47,26 @@ int main(int argc, char* argv) {
   size_t poblacion_ciudad_K = 30000;
   
   map<ciudad_t, size_t> ciudad_tiene_hospital = {
-  {ciudad_A, 0},
-  {ciudad_B, 0}, 
-  {ciudad_C, 0}, 
-  {ciudad_D, 0}, 
-  {ciudad_E, 0}, 
-  {ciudad_F, 0}, 
-  {ciudad_G, 0}, 
-  {ciudad_H, 0}, 
-  {ciudad_I, 0}, 
-  {ciudad_J, 0}, 
-  {ciudad_K, 0}
-};
+    {ciudad_A, 0},
+    {ciudad_B, 0}, 
+    {ciudad_C, 0}, 
+    {ciudad_D, 0}, 
+    {ciudad_E, 0}, 
+    {ciudad_F, 0}, 
+    {ciudad_G, 0}, 
+    {ciudad_H, 0}, 
+    {ciudad_I, 0}, 
+    {ciudad_J, 0}, 
+    {ciudad_K, 0}
+  };
 
 
   for (size_t i = 0 ; i < MAX_CIUDADES ; i++) {
-    
+    ciudad_tiene_hospital[ciudad_A] = 1;
+    ciudad_tiene_hospital[ciudad_B] = 1;
+    ciudad_tiene_hospital[ciudad_C] = 1;
+    ciudad_tiene_hospital[ciudad_D] = 1;
+
   }
 
   
