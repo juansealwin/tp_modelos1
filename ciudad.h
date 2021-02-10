@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <vector>
+#include <map>
+
 class Ciudad {
   public:
     size_t poblacion = 0;
@@ -8,4 +10,5 @@ class Ciudad {
     Ciudad();
     Ciudad(size_t);
     Ciudad(size_t, std::vector<size_t>);
+    bool hay_hospital_disponible(std::map<size_t, Ciudad>&);
 };

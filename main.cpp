@@ -54,17 +54,17 @@ bool config_valida(std::map<size_t, Ciudad> ciudades) {
 	  hospitales_totales += ciudades[it->first].hospitales;
 
   return(
-    (ciudades[A].hospitales + ciudades[B].hospitales + ciudades[D].hospitales + ciudades[F].hospitales >= 1) &&
-    (ciudades[A].hospitales + ciudades[B].hospitales + ciudades[C].hospitales + ciudades[D].hospitales >= 1) &&
-    (ciudades[C].hospitales + ciudades[B].hospitales + ciudades[D].hospitales + ciudades[E].hospitales >= 1) &&
-    (ciudades[D].hospitales + ciudades[A].hospitales + ciudades[B].hospitales + ciudades[C].hospitales + ciudades[F].hospitales + ciudades[G].hospitales + ciudades[E].hospitales >= 1) &&
-    (ciudades[C].hospitales + ciudades[D].hospitales + ciudades[G].hospitales + ciudades[H].hospitales + ciudades[I].hospitales >= 1) &&
-    (ciudades[F].hospitales + ciudades[A].hospitales + ciudades[B].hospitales + ciudades[C].hospitales + ciudades[D].hospitales >= 1) &&
-    (ciudades[G].hospitales + ciudades[F].hospitales + ciudades[D].hospitales + ciudades[E].hospitales + ciudades[H].hospitales >= 1) &&
-    (ciudades[H].hospitales + ciudades[G].hospitales + ciudades[E].hospitales + ciudades[I].hospitales + ciudades[J].hospitales >= 1) &&
-    (ciudades[E].hospitales + ciudades[H].hospitales + ciudades[J].hospitales + ciudades[I].hospitales >= 1) &&
-    (ciudades[J].hospitales + ciudades[H].hospitales + ciudades[I].hospitales >= 1) &&
-    (ciudades[K].hospitales + ciudades[F].hospitales >= 1) &&
+    ciudades[A].hay_hospital_disponible(ciudades) &&
+    ciudades[B].hay_hospital_disponible(ciudades) &&
+    ciudades[C].hay_hospital_disponible(ciudades) &&
+    ciudades[D].hay_hospital_disponible(ciudades) &&
+    ciudades[E].hay_hospital_disponible(ciudades) &&
+    ciudades[F].hay_hospital_disponible(ciudades) &&
+    ciudades[G].hay_hospital_disponible(ciudades) &&
+    ciudades[H].hay_hospital_disponible(ciudades) &&
+    ciudades[I].hay_hospital_disponible(ciudades) &&
+    ciudades[J].hay_hospital_disponible(ciudades) &&
+    ciudades[K].hay_hospital_disponible(ciudades) &&
 	  (hospitales_totales <= MAX_HOSPITALES)
   );
 }
