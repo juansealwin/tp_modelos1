@@ -20,33 +20,38 @@
 
 std::map<size_t, Ciudad> inicializar_ciudades(){ 
     return {
-      {A, Ciudad(15000)},
-      {B, Ciudad(20000)},
-      {C, Ciudad(38000)},
-      {D, Ciudad(12000)},
-      {E, Ciudad(22000)},
-      {F, Ciudad(31000)},
-      {G, Ciudad(300000)},
-      {H, Ciudad(62000)},
-      {I, Ciudad(15000)},
-      {J, Ciudad(6000)},
-      {K, Ciudad(30000)}
+      {A, Ciudad(15000, {B, D, F})},
+      {B, Ciudad(20000, {A, C, D})},
+      {C, Ciudad(38000, {B, D, E})},
+      {D, Ciudad(12000, {A, B, C, F, G, E})},
+      {E, Ciudad(22000, {C, D, G, H, I})},
+      {F, Ciudad(31000, {A, D, G, K})},
+      {G, Ciudad(300000, {F, D, E, H})},
+      {H, Ciudad(62000, {G, E, I, J})},
+      {I, Ciudad(15000, {E, H, J})},
+      {J, Ciudad(6000, {H, I})},
+      {K, Ciudad(30000, {F})}
 	  };
 }
 
-int obtener_tiempo(std::map<size_t, Ciudad> ciudades){
-	int tiempo = 0;
-	for (size_t i = 0 ; i < MAX_CIUDADES ; i++)
-	    tiempo += ( 60 - 45*ciudades[i].hospitales) * ciudades[i].poblacion;
+size_t obtener_tiempo(std::map<size_t, Ciudad> ciudades){
+	
+  size_t tiempo = 0;
+  std::map<size_t, Ciudad>::iterator it;
+
+	for (it = ciudades.begin() ; it != ciudades.end() ; ++it)
+	    tiempo += ( 60 - 45*ciudades[it->first].hospitales) * ciudades[it->first].poblacion;
+
 	return tiempo;
 }
 
 bool config_valida(std::map<size_t, Ciudad> ciudades) {
 
 	size_t hospitales_totales = 0;
-	for (size_t i = 0 ; i < MAX_CIUDADES ; i++)
-	  hospitales_totales += ciudades[i].hospitales;
+  std::map<size_t, Ciudad>::iterator it;
 
+	for (it = ciudades.begin() ; it != ciudades.end() ; ++it)
+	  hospitales_totales += ciudades[it->first].hospitales;
 
   return(
     (ciudades[A].hospitales + ciudades[B].hospitales + ciudades[D].hospitales + ciudades[F].hospitales >= 1) &&
@@ -64,47 +69,39 @@ bool config_valida(std::map<size_t, Ciudad> ciudades) {
   );
 }
 
-
-void imprimir_resultados(std::map<size_t, Ciudad> ciudades){
-  std::cout<<"Ciudad A:"<< ciudades[A].hospitales << std::endl;
-  std::cout<<"Ciudad B:"<< ciudades[B].hospitales << std::endl;
-  std::cout<<"Ciudad C:"<< ciudades[C].hospitales << std::endl;
-  std::cout<<"Ciudad D:"<< ciudades[D].hospitales << std::endl;
-  std::cout<<"Ciudad E:"<< ciudades[E].hospitales << std::endl;
-  std::cout<<"Ciudad F:"<< ciudades[F].hospitales << std::endl;
-  std::cout<<"Ciudad G:"<< ciudades[G].hospitales << std::endl;
-  std::cout<<"Ciudad H:"<< ciudades[H].hospitales << std::endl;
-  std::cout<<"Ciudad I:"<< ciudades[I].hospitales << std::endl;
-  std::cout<<"Ciudad J:"<< ciudades[J].hospitales << std::endl;
-  std::cout<<"Ciudad K:"<< ciudades[K].hospitales << std::endl;
+void imprimir_solucion(std::map<size_t, Ciudad> ciudades){
+  
+  std::map<size_t, Ciudad>::iterator it;
+  
+  for(it = ciudades.begin() ; it != ciudades.end() ; ++it)
+    std::cout<<"Ciudad "<< it->first<< " : "<< it->second.hospitales << std::endl;
+  
   std::cout<<"Tiempo total de viaje al hospital: "<< obtener_tiempo(ciudades) << " minutos" << std::endl << std::endl;
 }
 
-int main(int argc, char** argv) {
 
-  size_t cantidad_de_soluciones = 0;
-
-  //Obtengo mapa inicial
-  std::map<size_t, Ciudad> ciudades; 
-
+void buscar_soluciones_por_orden_alfabetico(std::map<size_t, Ciudad>& ciudades, size_t& cantidad_de_soluciones){
+  
   for (size_t i = 0 ; i < MAX_CIUDADES - MAX_HOSPITALES ; i++) {
-
+    
+    std::map<size_t, Ciudad>::iterator it;
     ciudades = inicializar_ciudades();
 
-	  //cargo primeros MAX_HOSPITALES - 1
-	   size_t j = 0;
-	   while ( j < MAX_HOSPITALES - 1) {
-		   ciudades[i+j].hospitales = 1;
-		   j++;
-	   }
+	  //Cargo primeros MAX_HOSPITALES - 1
+    size_t j = 0;
+	  while (j < MAX_HOSPITALES - 1) {
+		  ciudades[i+j].hospitales = 1;
+      j++;
+	  }
 
-	  //Voy probando las distintas configuraciones
+
+	  //Voy chequeando las distintas configuraciones
 	  for (size_t k = i+j ; k < MAX_CIUDADES ; k++) {
 	    ciudades[k].hospitales = 1;
 
       if(config_valida(ciudades)){
         cantidad_de_soluciones++;
-        imprimir_resultados(ciudades);
+        imprimir_solucion(ciudades);
         ciudades = inicializar_ciudades();
       }
 	    else{
@@ -118,11 +115,20 @@ int main(int argc, char** argv) {
     else if (i == MAX_CIUDADES - MAX_HOSPITALES - 1)
       std::cout<<"No hay mas soluciones disponibles"<<std::endl;
   }
+
+  return;
+}
+
+int main(int argc, char** argv) {
+
+  size_t cantidad_de_soluciones = 0;
+
+  //Obtengo mapa inicial
+  std::map<size_t, Ciudad> ciudades; 
   
-  //imprimir_resultados(ciudades);
+  buscar_soluciones_por_orden_alfabetico(ciudades, cantidad_de_soluciones);
   
   return EXIT_SUCCESS;
 }
-
 
 
