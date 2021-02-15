@@ -146,7 +146,7 @@ void buscar_soluciones_validas(std::map<size_t, Ciudad>& ciudades){
       cantidad_de_soluciones++;
     }
   }
-  
+
   return;
 }
 
@@ -174,7 +174,10 @@ int main(int argc, char** argv) {
 
   //Obtengo mapa inicial
   std::map<size_t, Ciudad> ciudades = inicializar_ciudades();
+
+  //Comentar esta funcion si no se quiere buscar los hospitales por ciudades mas pobladas
   ordenar_ciudades_por_poblacion(ciudades);
+  
   buscar_soluciones_validas(ciudades);
   
   return EXIT_SUCCESS;

@@ -1,5 +1,5 @@
 #include "ciudad.h"
-#include <iostream>
+
 Ciudad::Ciudad(){
   this->hospitales = 0;
   this->poblacion = 0;
