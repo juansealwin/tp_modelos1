@@ -14,10 +14,27 @@
 #define I 8
 #define J 9
 #define K 10
+#define L 11
+#define M 12
+#define N 13
+#define O 14
+#define P 15
+#define Q 16
+#define R 17
+#define S 18
+#define T 19
+#define U 20
+#define V 21
+#define W 22
+#define X 23
+#define Y 24
+#define Z 25
 #define MAX_CIUDADES 11
+//#define MAX_CIUDADES 25
 #define MAX_HOSPITALES 6
 #define MAX_SOLUCIONES_VALIDAS 6
 
+///*
 std::map<size_t, Ciudad> inicializar_ciudades(){ 
     return {
       {A, Ciudad(15000, {B, D, F})},
@@ -33,6 +50,40 @@ std::map<size_t, Ciudad> inicializar_ciudades(){
       {K, Ciudad(30000, {F})}
 	  };
 }
+//*/
+
+/*
+std::map<size_t, Ciudad> inicializar_ciudades(){
+    return {
+      {A, Ciudad(15000, {B, D, F})},
+      {B, Ciudad(20000, {A, C, D})},
+      {C, Ciudad(38000, {B, D, E})},
+      {D, Ciudad(12000, {A, B, C, F, G, E})},
+      {E, Ciudad(22000, {C, D, G, H, I})},
+      {F, Ciudad(31000, {A, D, G, K})},
+      {G, Ciudad(300000, {F, D, E, H})},
+      {H, Ciudad(62000, {G, E, I, J})},
+      {I, Ciudad(15000, {E, H, J})},
+      {J, Ciudad(6000, {H, I})},
+      {K, Ciudad(30000, {F})},
+      {L, Ciudad(115000, {B})},
+      {M, Ciudad(25000, {A, D})},
+      {N, Ciudad(378000, {B, W, E})},
+      {O, Ciudad(112000, {Z})},
+      {P, Ciudad(322000, {A})},
+      {Q, Ciudad(431000, {A, U})},
+      {R, Ciudad(320000, {E, H, X})},
+      {S, Ciudad(92000, {B, T})},
+      {T, Ciudad(75000, {S, U})},
+      {U, Ciudad(65000, {I, J, Z})},
+      {V, Ciudad(3000, {I})},
+      {W, Ciudad(1000, {A,Z})},
+      {X, Ciudad(1000,  {Z})},
+      {Y, Ciudad(350000, {B,X})},
+      {Z, Ciudad(530000, {F,Y})}
+    };
+}
+//*/
 
 size_t obtener_tiempo(std::map<size_t, Ciudad> ciudades){
 	
@@ -48,26 +99,21 @@ size_t obtener_tiempo(std::map<size_t, Ciudad> ciudades){
 bool config_valida(std::map<size_t, Ciudad> ciudades) {
 
 	size_t hospitales_totales = 0;
-  std::map<size_t, Ciudad>::iterator it;
+	std::map<size_t, Ciudad>::iterator it;
 
-  // Contabilizo los hospitales encendidos
+	// Contabilizo los hospitales encendidos
 	for (it = ciudades.begin() ; it != ciudades.end() ; ++it)
 	  hospitales_totales += ciudades[it->first].hospitales;
 
-  return(
-    ciudades[A].hay_hospital_disponible(ciudades) &&
-    ciudades[B].hay_hospital_disponible(ciudades) &&
-    ciudades[C].hay_hospital_disponible(ciudades) &&
-    ciudades[D].hay_hospital_disponible(ciudades) &&
-    ciudades[E].hay_hospital_disponible(ciudades) &&
-    ciudades[F].hay_hospital_disponible(ciudades) &&
-    ciudades[G].hay_hospital_disponible(ciudades) &&
-    ciudades[H].hay_hospital_disponible(ciudades) &&
-    ciudades[I].hay_hospital_disponible(ciudades) &&
-    ciudades[J].hay_hospital_disponible(ciudades) &&
-    ciudades[K].hay_hospital_disponible(ciudades) &&
-	  (hospitales_totales == MAX_HOSPITALES)
-  );
+	it = ciudades.begin();
+
+    //verifco el && de todos hospitales
+	bool hay_hospital_disponible = ciudades[it->first].hay_hospital_disponible(ciudades);
+
+	for (it = ciudades.begin() ; it != ciudades.end() ; ++it)
+		hay_hospital_disponible = hay_hospital_disponible && ciudades[it->first].hay_hospital_disponible(ciudades);
+
+	return( hay_hospital_disponible && hospitales_totales == MAX_HOSPITALES );
 }
 
 void imprimir_solucion(std::map<size_t, Ciudad> ciudades){
@@ -98,7 +144,7 @@ void imprimir_mejora(size_t minutos_primer_solucion, size_t minutos_mejora){
   std::cout<<"La mejora fue de un: "<<porcentaje_de_mejora<<"%"<<std::endl;
 
   return;
-}  
+}
 
 
 bool permutar_hospitales(std::map<size_t, Ciudad>& ciudades){
@@ -176,7 +222,7 @@ void buscar_soluciones_validas_mejoramiento(std::map<size_t, Ciudad>& ciudades){
 
   //Obtengo tiempo antes de comenzar
   size_t minutos_totales = obtener_tiempo(ciudades);
-  
+
   //mientras pueda permutar y cantidades de mejoramiento a aplicar
   while(permutar_hospitales(ciudades) && cantidad_de_soluciones < MAX_SOLUCIONES_VALIDAS){
 	  size_t minutos_totales_actual = obtener_tiempo(ciudades);
@@ -193,7 +239,7 @@ void buscar_soluciones_validas_mejoramiento(std::map<size_t, Ciudad>& ciudades){
   }
 
   imprimir_solucion(ciudades_mejorada);
-  
+
   if(minutos_primer_solucion > minutos_totales)
     imprimir_mejora(minutos_primer_solucion, minutos_totales);
 
