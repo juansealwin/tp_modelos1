@@ -17,6 +17,7 @@
 #define MAX_CIUDADES 11
 #define MAX_HOSPITALES 6
 #define MAX_SOLUCIONES_VALIDAS 5
+#define MAX_MEJORAMIENTO 3
 
 std::map<size_t, Ciudad> inicializar_ciudades(){ 
     return {
@@ -92,7 +93,7 @@ void reiniciar_hospitales(std::map<size_t, Ciudad>& ciudades){
 
 bool permutar_hospitales(std::map<size_t, Ciudad>& ciudades){
   
-  //Si no se completa la permutación es que fue la última
+  //Si no se completa la permutaciÃ³n es que fue la Ãºltima
   bool permutacion_completa = false;
   size_t hospitales_a_encender = 1;
   size_t total_ciudades = ciudades.size() - 1;
@@ -106,7 +107,7 @@ bool permutar_hospitales(std::map<size_t, Ciudad>& ciudades){
       hospitales_a_encender++;
       i--;
 
-      //Desactivamos todos los hospitales que estan a lo último del conjunto
+      //Desactivamos todos los hospitales que estan a lo Ãºltimo del conjunto
       while(ciudades[i].hospitales == 1){
         ciudades[i].hospitales = 0;
         hospitales_a_encender++;
@@ -150,6 +151,35 @@ void buscar_soluciones_validas(std::map<size_t, Ciudad>& ciudades){
   return;
 }
 
+void buscar_soluciones_validas_mejoramiento(std::map<size_t, Ciudad>& ciudades){
+
+  size_t cantidad_de_soluciones = 0;
+  std::map<size_t, Ciudad> ciudades_mejorada = ciudades;
+
+  //Cargo primero MAX_HOSPITALES
+  size_t j = 0;
+  while (j < MAX_HOSPITALES - 1) {
+    ciudades[j].hospitales = 1;
+    j++;
+  }
+
+  //Obtengo tiemo antes de comenzar
+  size_t minutos_totales = obtener_tiempo(ciudades);
+
+  imprimir_solucion(ciudades);
+  //mientras pueda permutar y cantidades de mejoramiento a aplicar
+  while(permutar_hospitales(ciudades) && cantidad_de_soluciones < MAX_SOLUCIONES_VALIDAS){
+	  size_t minutos_totales_actual = obtener_tiempo(ciudades);
+    if( config_valida(ciudades) && minutos_totales > minutos_totales_actual){
+    	minutos_totales = minutos_totales_actual;
+    	ciudades_mejorada = ciudades;
+    	cantidad_de_soluciones++;
+    }
+  }
+
+  imprimir_solucion(ciudades_mejorada);
+  return;
+}
 
 
 void ordenar_ciudades_por_poblacion(std::map<size_t, Ciudad>& ciudades){
@@ -176,9 +206,10 @@ int main(int argc, char** argv) {
   std::map<size_t, Ciudad> ciudades = inicializar_ciudades();
 
   //Comentar esta funcion si no se quiere buscar los hospitales por ciudades mas pobladas
-  ordenar_ciudades_por_poblacion(ciudades);
-  
-  buscar_soluciones_validas(ciudades);
+  //ordenar_ciudades_por_poblacion(ciudades);
+
+  //buscar_soluciones_validas(ciudades);
+  buscar_soluciones_validas_mejoramiento(ciudades);
   
   return EXIT_SUCCESS;
 }
@@ -213,7 +244,7 @@ int main(int argc, char** argv) {
       
 // 	  }
 
-// 	  //Chequeo si hayé una solución válida 
+// 	  //Chequeo si hayÃ© una soluciÃ³n vÃ¡lida 
 //     if(cantidad_de_soluciones == MAX_SOLUCIONES_VALIDAS)
 //       break;
 //     else if (i == MAX_CIUDADES - MAX_HOSPITALES - 1)
