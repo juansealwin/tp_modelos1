@@ -146,7 +146,7 @@ void buscar_soluciones_validas(std::map<size_t, Ciudad>& ciudades){
   
   //Cargo primero MAX_HOSPITALES
   size_t j = 0;
-  while (j < MAX_HOSPITALES - 1) {
+  while (j < MAX_HOSPITALES) {
     ciudades[j].hospitales = 1;
     j++;
   }
